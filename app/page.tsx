@@ -23,6 +23,7 @@ import Image from "next/image"
 export default function Portfolio() {
   const [activeSection, setActiveSection] = useState("hero")
   const [isVisible, setIsVisible] = useState(false)
+  const [sectionsInView, setSectionsInView] = useState<Set<string>>(new Set())
   const [showComingSoonModal, setShowComingSoonModal] = useState(false)
   const [showNotAvailableModal, setShowNotAvailableModal] = useState(false)
 
@@ -39,6 +40,8 @@ export default function Portfolio() {
           const { offsetTop, offsetHeight } = element
           if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
             setActiveSection(section)
+            setSectionsInView(prev => new Set(prev).add(section))
+            console.log(`Active Section: ${section}, Scroll Pos: ${scrollPosition}, Element Top: ${offsetTop}, Element Height: ${offsetHeight}`)
             break
           }
         }
@@ -168,7 +171,7 @@ export default function Portfolio() {
         <div className="absolute inset-0 bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-yellow-500/20 animate-pulse"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <div
-            className={`transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+            className={`transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 scale-95"}`}
           >
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6">
               <span className="bg-gradient-to-r from-pink-400 via-purple-400 to-yellow-400 bg-clip-text text-transparent animate-gradient">
@@ -205,7 +208,7 @@ export default function Portfolio() {
       {/* About Section */}
       <section id="about" className="py-20 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className={`grid lg:grid-cols-2 gap-12 items-center transition-all duration-1000 ${sectionsInView.has("about") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
             <div className="space-y-6">
               <h2 className="text-4xl font-bold text-white mb-6">About Me</h2>
               <p className="text-lg text-white/80 leading-relaxed">
@@ -253,10 +256,12 @@ export default function Portfolio() {
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="py-20 bg-black/20">
+      <section id="projects" className="py-20 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl font-bold text-white text-center mb-12">Featured Projects</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <h2 className="text-4xl font-bold text-white mb-12 text-center">
+            My <span className="bg-gradient-to-r from-pink-400 via-purple-400 to-yellow-400 bg-clip-text text-transparent">Projects</span>
+          </h2>
+          <div className={`grid md:grid-cols-2 lg:grid-cols-3 gap-8 transition-all duration-1000 ${sectionsInView.has("projects") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
             {projects.map((project, index) => (
               <Card
                 key={index}
@@ -336,10 +341,12 @@ export default function Portfolio() {
       </section>
 
       {/* Skills Section */}
-      <section id="skills" className="py-20">
+      <section id="skills" className="py-20 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl font-bold text-white text-center mb-12">Skills & Expertise</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <h2 className="text-4xl font-bold text-white mb-12 text-center">
+            My <span className="bg-gradient-to-r from-pink-400 via-purple-400 to-yellow-400 bg-clip-text text-transparent">Skills</span>
+          </h2>
+          <div className={`grid md:grid-cols-2 lg:grid-cols-4 gap-8 transition-all duration-1000 ${sectionsInView.has("skills") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
             {skills.map((skill, index) => (
               <Card
                 key={index}
@@ -367,48 +374,48 @@ export default function Portfolio() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-20 bg-black/20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl font-bold text-white text-center mb-12">Get In Touch</h2>
-          <div className="space-y-6">
-            <h3 className="text-2xl font-semibold text-white mb-4">Let's Work Together</h3>
-            <p className="text-white/80 text-lg leading-relaxed">
-              I'm always interested in new opportunities and exciting projects. Whether you have a question or just want
-              to say hi, feel free to reach out!
-            </p>
-            <div className="flex items-center space-x-6 mt-6">
-              <a
-                href="https://github.com/alitacodes"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-pink-400 hover:text-pink-300 transition-colors duration-300 transform hover:scale-110"
-              >
-                <Github className="h-6 w-6" />
-              </a>
-              <a
-                href="https://www.linkedin.com/in/sneha-mandal-36938432b"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-pink-400 hover:text-pink-300 transition-colors duration-300 transform hover:scale-110"
-              >
-                <Linkedin className="h-6 w-6" />
-              </a>
-              <a
-                href="https://x.com/SnehaM01"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-pink-400 hover:text-pink-300 transition-colors duration-300 transform hover:scale-110"
-              >
-                <Twitter className="h-6 w-6" />
-              </a>
-              <a
-                href="mailto:snehaman1010@gmail.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-pink-400 hover:text-pink-300 transition-colors duration-300 transform hover:scale-110"
-              >
-                <Mail className="h-6 w-6" />
-              </a>
+      <section id="contact" className="py-20 relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center space-y-8">
+            <h2 className="text-4xl font-bold text-white text-center mb-12">Get In Touch</h2>
+            <div className="space-y-6">
+              <p className="text-lg text-white/80">
+                Feel free to connect with me on social media or send an email!
+              </p>
+              <div className="flex flex-wrap justify-center gap-6 text-white/70">
+                <a
+                  href="https://github.com/alitacodes"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-pink-400 hover:text-pink-300 transition-colors duration-300 transform hover:scale-110"
+                >
+                  <Github className="h-6 w-6" />
+                </a>
+                <a
+                  href="https://www.linkedin.com/in/sneha-mandal-36938432b"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-pink-400 hover:text-pink-300 transition-colors duration-300 transform hover:scale-110"
+                >
+                  <Linkedin className="h-6 w-6" />
+                </a>
+                <a
+                  href="https://x.com/SnehaM01"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-pink-400 hover:text-pink-300 transition-colors duration-300 transform hover:scale-110"
+                >
+                  <Twitter className="h-6 w-6" />
+                </a>
+                <a
+                  href="mailto:snehaman1010@gmail.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-pink-400 hover:text-pink-300 transition-colors duration-300 transform hover:scale-110"
+                >
+                  <Mail className="h-6 w-6" />
+                </a>
+              </div>
             </div>
           </div>
         </div>

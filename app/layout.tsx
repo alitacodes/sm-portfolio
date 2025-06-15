@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { Rubik } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
+import { Chatbot } from "@/components/chatbot"
 
 const rubik = Rubik({
   subsets: ["latin"],
@@ -23,10 +24,11 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={rubik.className}>
+    <html lang="en" className={rubik.className} suppressHydrationWarning>
       <body>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           {children}
+          <Chatbot />
         </ThemeProvider>
       </body>
     </html>
